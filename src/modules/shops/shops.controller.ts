@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common';
 import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ShopsDTO } from './shops.dto';
 
@@ -7,32 +7,32 @@ import { ShopsDTO } from './shops.dto';
 export class ShopsController {
 
 	@Get("/shops")
-	async list() {
+	async list(@Res() res) {
 		//
 	}
 
 	@Post("/shops")
 	@ApiBody({ type: ShopsDTO })
-	async create(@Body() body: ShopsDTO) {
+	async create(@Res() res, @Body() body: ShopsDTO) {
 		//
 	}
 
 	@Get("/shops/:shopID")
 	@ApiParam({ name: 'shopID', type: Number })
-	async describe(@Param() params) {
+	async describe(@Res() res, @Param() params) {
 		//
 	}
 
 	@Put("/shops/:shopID")
 	@ApiParam({ name: 'shopID', type: Number })
 	@ApiBody({ type: ShopsDTO })
-	async update(@Param() params, @Body() body: ShopsDTO) {
+	async update(@Res() res, @Param() params, @Body() body: ShopsDTO) {
 		//
 	}
 
 	@Delete("/shops/:shopID")
 	@ApiParam({ name: 'shopID', type: Number })
-	async delete(@Param() params) {
+	async delete(@Res() res, @Param() params) {
 		//
 	}
 }
