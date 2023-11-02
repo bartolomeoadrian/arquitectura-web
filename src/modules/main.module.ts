@@ -12,6 +12,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 		}),
 		CacheModule.register({
 			isGlobal: true,
+			ttl: 0,
 		}),
 		ShopsModule,
 		UsersModule
