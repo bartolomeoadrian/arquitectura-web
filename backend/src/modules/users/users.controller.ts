@@ -57,6 +57,9 @@ export class UsersController {
 		if (exists && exists.id !== params.userID) return res.status(HttpStatus.CONFLICT).json({ message: 'El usuario ya existe' });
 
 		const sha256 = require('sha256');
+		const password = sha256(body.password);
+		if (password !== users[index].password) return res.status(HttpStatus.BAD_REQUEST).json({ message: 'La contraseña es incorrecta' });
+
 		users[index] = { ...users[index], ...body, password: sha256(body.password) };
 		await this.cacheManager.set('users', users);
 
