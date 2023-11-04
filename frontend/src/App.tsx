@@ -10,9 +10,9 @@ import {
 	setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
+import { ellipse, people, storefront, triangle } from 'ionicons/icons';
+import Shops from './pages/Shops';
+import Users from './pages/Users';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -41,10 +41,10 @@ const App: React.FC = () => (
 			<IonTabs>
 				<IonRouterOutlet>
 					<Route exact path="/shops">
-						<Tab1 />
+						<Shops />
 					</Route>
 					<Route exact path="/users">
-						<Tab2 />
+						<Users />
 					</Route>
 					<Route exact path="/">
 						<Redirect to="/shops" />
@@ -52,11 +52,11 @@ const App: React.FC = () => (
 				</IonRouterOutlet>
 				<IonTabBar slot="bottom">
 					<IonTabButton tab="shops" href="/shops">
-						<IonIcon aria-hidden="true" icon={triangle} />
-						<IonLabel>Shops</IonLabel>
+						<IonIcon aria-hidden="true" icon={storefront} />
+						<IonLabel>Tiendas</IonLabel>
 					</IonTabButton>
 					<IonTabButton tab="users" href="/users">
-						<IonIcon aria-hidden="true" icon={ellipse} />
+						<IonIcon aria-hidden="true" icon={people} />
 						<IonLabel>Usuarios</IonLabel>
 					</IonTabButton>
 				</IonTabBar>
