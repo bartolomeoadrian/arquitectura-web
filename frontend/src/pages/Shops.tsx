@@ -6,8 +6,10 @@ import { alert } from 'ionicons/icons';
 
 const Shops: React.FC = () => {
 	const [present] = useIonToast();
+	const [shop, setShop] = useState(null);
 	const [shops, setShops] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [isOpen, setIsOpen] = useState(false);
 
 	useEffect(() => {
 		list();
@@ -41,18 +43,33 @@ const Shops: React.FC = () => {
 		});
 	}
 
+	function edit(shop: any) {
+		setShop(shop);
+		setIsOpen(true);
+	}
+
+	function create() {
+		setShop(null);
+		setIsOpen(true);
+	}
+
+	function onWillDismiss() {
+		setIsOpen(false);
+		list();
+	}
+
 	return (
 		<IonPage>
 			<IonHeader>
 				<IonToolbar>
 					<IonTitle>Tiendas</IonTitle>
 					<IonButtons slot="end">
-						<IonButton id="open-shop" expand="block">Nueva tienda</IonButton>
+						<IonButton onClick={() => create()}>Nueva tienda</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<ShopDetail />
+				<ShopDetail shop={shop} isOpen={isOpen} onWillDismiss={onWillDismiss} />
 				{loading ? <IonLoading message="Cargando" /> : shops.length === 0
 					? <IonTitle>No hay tiendas</IonTitle>
 					: shops.map((shop: any, i) => (
@@ -62,7 +79,7 @@ const Shops: React.FC = () => {
 							</IonCardHeader>
 							<IonCardContent>
 								<IonButtons slot="end">
-									<IonButton expand="block">Editar</IonButton>
+									<IonButton expand="block" onClick={() => edit(shop)}>Editar</IonButton>
 									<IonButton expand="block" onClick={() => remove(shop.id)}>Eliminar</IonButton>
 								</IonButtons>
 							</IonCardContent>
