@@ -3,23 +3,26 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { alert, create } from 'ionicons/icons';
 
-interface ShopDetailProps {
-	shop?: any;
+interface UserDetailProps {
+	user?: any;
 	isOpen: boolean;
 	onWillDismiss: () => void;
 };
 
-const ShopDetail: React.FC<ShopDetailProps> = (props) => {
+const UserDetail: React.FC<UserDetailProps> = (props) => {
 	const [present] = useIonToast();
-	const [shop, setShop] = useState(props.shop);
+	const [user, setUser] = useState(props.user);
 	const [loading, setLoading] = useState(false);
 
 	const modal = useRef<HTMLIonModalElement>(null);
+	const inputUsername = useRef<HTMLIonInputElement>(null);
 	const inputName = useRef<HTMLIonInputElement>(null);
+	const inputSurname = useRef<HTMLIonInputElement>(null);
+	const inputPassword = useRef<HTMLIonInputElement>(null);
 
 	useEffect(() => {
-		setShop(props.shop);
-	}, [props.shop]);
+		setUser(props.user);
+	}, [props.user]);
 
 	function error(error: any) {
 		present({
@@ -33,8 +36,11 @@ const ShopDetail: React.FC<ShopDetailProps> = (props) => {
 		if (loading) return;
 		setLoading(true);
 
-		axios.post('https://arquitectura-web.nyva.com.ar/api/shops', {
-			name: inputName.current?.value
+		axios.post('https://arquitectura-web.nyva.com.ar/api/users', {
+			username: inputUsername.current?.value,
+			name: inputName.current?.value,
+			surname: inputSurname.current?.value,
+			password: inputPassword.current?.value
 		}).then(response => {
 			modal.current?.dismiss();
 		}).catch(error).finally(() => {
@@ -46,8 +52,11 @@ const ShopDetail: React.FC<ShopDetailProps> = (props) => {
 		if (loading) return;
 		setLoading(true);
 
-		axios.put('https://arquitectura-web.nyva.com.ar/api/shops/' + shop.id, {
-			name: inputName.current?.value
+		axios.put('https://arquitectura-web.nyva.com.ar/api/users/' + user.id, {
+			username: inputUsername.current?.value,
+			name: inputName.current?.value,
+			surname: inputSurname.current?.value,
+			password: inputPassword.current?.value
 		}).then(response => {
 			modal.current?.dismiss();
 		}).catch(error).finally(() => {
@@ -56,7 +65,7 @@ const ShopDetail: React.FC<ShopDetailProps> = (props) => {
 	}
 
 	function save() {
-		if (shop) {
+		if (user) {
 			update();
 		} else {
 			create();
@@ -71,7 +80,7 @@ const ShopDetail: React.FC<ShopDetailProps> = (props) => {
 						<IonButtons slot="start">
 							<IonButton onClick={() => modal.current?.dismiss()}>Cancelar</IonButton>
 						</IonButtons>
-						<IonTitle>Tienda</IonTitle>
+						<IonTitle>Usuario</IonTitle>
 						<IonButtons slot="end">
 							<IonButton strong={true} onClick={() => save()}>Guardar</IonButton>
 						</IonButtons>
@@ -79,7 +88,16 @@ const ShopDetail: React.FC<ShopDetailProps> = (props) => {
 				</IonHeader>
 					<IonContent className="ion-padding">
 						<IonItem>
-							<IonInput label="Nombre" labelPlacement="stacked" ref={inputName} type="text" placeholder="Nombre de la tienda" value={shop?.name} />
+							<IonInput label="Usuario" labelPlacement="stacked" ref={inputUsername} type="text" placeholder="Usuario" value={user?.username} />
+						</IonItem>
+						<IonItem>
+							<IonInput label="Nombre" labelPlacement="stacked" ref={inputName} type="text" placeholder="Nombre del usuario" value={user?.name} />
+						</IonItem>
+						<IonItem>
+							<IonInput label="Apellido" labelPlacement="stacked" ref={inputSurname} type="text" placeholder="Apellido del usuario" value={user?.surname} />
+						</IonItem>
+						<IonItem>
+							<IonInput label="Contraseña" labelPlacement="stacked" ref={inputPassword} type="password" placeholder="Password del usuario" />
 						</IonItem>
 					</IonContent>
 				</>
@@ -88,4 +106,4 @@ const ShopDetail: React.FC<ShopDetailProps> = (props) => {
 	);
 };
 
-export default ShopDetail;
+export default UserDetail;

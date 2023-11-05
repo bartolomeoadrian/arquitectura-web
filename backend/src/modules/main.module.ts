@@ -16,7 +16,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 			ttl: 0,
 		}),
 		ServeStaticModule.forRoot({
-			rootPath: `${process.cwd()}/src/static/dist`,
+			rootPath: `${process.cwd()}/../frontend/dist`,
 		}),
 		ShopsModule,
 		UsersModule
