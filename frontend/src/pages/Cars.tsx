@@ -1,13 +1,16 @@
 import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonLoading, IonPage, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 import { useEffect, useState } from 'react';
-import ShopDetail from './ShopsDetail';
+import CarDetail from './CarsDetail';
 import axios from 'axios';
 import { alert } from 'ionicons/icons';
+import { useParams } from 'react-router';
 
-const Shops: React.FC = () => {
+const Cars: React.FC = () => {
+	const { shopID } = useParams<any>();
+
 	const [present] = useIonToast();
-	const [shop, setShop] = useState(null);
-	const [shops, setShops] = useState([]);
+	const [car, setCar] = useState(null);
+	const [cars, setCars] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -26,8 +29,8 @@ const Shops: React.FC = () => {
 	function list() {
 		setLoading(true);
 
-		axios.get('https://arquitectura-web.nyva.com.ar/api/shops').then(response => {
-			setShops(response.data);
+		axios.get(`https://arquitectura-web.nyva.com.ar/api/shops/${shopID}/cars`).then(response => {
+			setCars(response.data);
 		}).catch(error).finally(() => {
 			setLoading(false);
 		});
@@ -36,20 +39,20 @@ const Shops: React.FC = () => {
 	function remove(id: number) {
 		setLoading(true);
 
-		axios.delete('https://arquitectura-web.nyva.com.ar/api/shops/' + id).then(response => {
+		axios.delete(`https://arquitectura-web.nyva.com.ar/api/shops/${shopID}/cars/${id}`).then(response => {
 			list();
 		}).catch(error).finally(() => {
 			setLoading(false);
 		});
 	}
 
-	function edit(shop: any) {
-		setShop(shop);
+	function edit(car: any) {
+		setCar(car);
 		setIsOpen(true);
 	}
 
 	function create() {
-		setShop(null);
+		setCar(null);
 		setIsOpen(true);
 	}
 
@@ -62,26 +65,25 @@ const Shops: React.FC = () => {
 		<IonPage>
 			<IonHeader>
 				<IonToolbar>
-					<IonTitle>Tiendas</IonTitle>
+					<IonTitle>Autos</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => create()}>Nueva tienda</IonButton>
+						<IonButton onClick={() => create()}>Nuevo auto</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<ShopDetail shop={shop} isOpen={isOpen} onWillDismiss={onWillDismiss} />
-				{loading ? <IonLoading message="Cargando" /> : shops.length === 0
-					? <IonTitle>No hay tiendas</IonTitle>
-					: shops.map((shop: any, i) => (
+				<CarDetail car={car} isOpen={isOpen} onWillDismiss={onWillDismiss} />
+				{loading ? <IonLoading message="Cargando" /> : cars.length === 0
+					? <IonTitle>No hay autos</IonTitle>
+					: cars.map((car: any, i) => (
 						<IonCard key={i}>
 							<IonCardHeader>
-								<IonCardTitle>{shop.name}</IonCardTitle>
+								<IonCardTitle>{car.name}</IonCardTitle>
 							</IonCardHeader>
 							<IonCardContent>
 								<IonButtons slot="end">
-									<IonButton expand="block" routerLink={'/shops/' + shop.id + '/cars'}>Autos</IonButton>
-									<IonButton expand="block" onClick={() => edit(shop)}>Editar</IonButton>
-									<IonButton expand="block" onClick={() => remove(shop.id)}>Eliminar</IonButton>
+									<IonButton expand="block" onClick={() => edit(car)}>Editar</IonButton>
+									<IonButton expand="block" onClick={() => remove(car.id)}>Eliminar</IonButton>
 								</IonButtons>
 							</IonCardContent>
 						</IonCard>
@@ -91,4 +93,4 @@ const Shops: React.FC = () => {
 	);
 };
 
-export default Shops;
+export default Cars;

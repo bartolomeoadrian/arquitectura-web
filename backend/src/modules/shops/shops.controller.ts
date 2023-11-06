@@ -29,24 +29,24 @@ export class ShopsController {
 	}
 
 	@Get("/shops/:shopID")
-	@ApiParam({ name: 'shopID', type: Number })
+	@ApiParam({ name: 'shopID', type: String })
 	async describe(@Res() res, @Param() params) {
 		const shops = await this.cacheManager.get('shops') || [];
 
 		const shop = shops.find((shop) => shop.id === params.shopID);
-		if (!shop) return res.status(HttpStatus.NOT_FOUND).json({ message: 'El shop no existe' });
+		if (!shop) return res.status(HttpStatus.NOT_FOUND).json({ message: 'La tienda no existe' });
 
 		return res.status(HttpStatus.OK).json(shop);
 	}
 
 	@Put("/shops/:shopID")
-	@ApiParam({ name: 'shopID', type: Number })
+	@ApiParam({ name: 'shopID', type: String })
 	@ApiBody({ type: ShopsDTO })
 	async update(@Res() res, @Param() params, @Body() body: ShopsDTO) {
 		const shops = await this.cacheManager.get('shops') || [];
 
 		const index = shops.findIndex((shop) => shop.id === params.shopID);
-		if (index < 0) return res.status(HttpStatus.NOT_FOUND).json({ message: 'El shop no existe' });
+		if (index < 0) return res.status(HttpStatus.NOT_FOUND).json({ message: 'La tienda no existe' });
 
 		shops[index] = { ...shops[index], ...body };
 		await this.cacheManager.set('shops', shops);
@@ -55,16 +55,16 @@ export class ShopsController {
 	}
 
 	@Delete("/shops/:shopID")
-	@ApiParam({ name: 'shopID', type: Number })
+	@ApiParam({ name: 'shopID', type: String })
 	async delete(@Res() res, @Param() params) {
 		const shops = await this.cacheManager.get('shops') || [];
 
 		const index = shops.findIndex((shop) => shop.id === params.shopID);
-		if (index < 0) return res.status(HttpStatus.NOT_FOUND).json({ message: 'El shop no existe' });
+		if (index < 0) return res.status(HttpStatus.NOT_FOUND).json({ message: 'La tienda no existe' });
 
 		shops.splice(index, 1);
 		await this.cacheManager.set('shops', shops);
 
-		return res.status(HttpStatus.OK).json({ message: 'El shop ha sido eliminado' });
+		return res.status(HttpStatus.OK).json({ message: 'La tienda ha sido eliminado' });
 	}
 }
