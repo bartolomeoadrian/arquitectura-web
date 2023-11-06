@@ -2,6 +2,7 @@ import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardT
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { alert, create } from 'ionicons/icons';
+import { useParams } from 'react-router';
 
 interface CarDetailProps {
 	car?: any;
@@ -10,6 +11,8 @@ interface CarDetailProps {
 };
 
 const CarDetail: React.FC<CarDetailProps> = (props) => {
+	const { shopID } = useParams<any>();
+
 	const [present] = useIonToast();
 	const [car, setCar] = useState(props.car);
 	const [loading, setLoading] = useState(false);

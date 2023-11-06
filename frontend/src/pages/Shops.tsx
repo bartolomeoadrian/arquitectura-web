@@ -1,8 +1,10 @@
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonLoading, IonPage, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
+import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonLoading, IonPage, IonRow, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import ShopDetail from './ShopsDetail';
 import axios from 'axios';
 import { alert } from 'ionicons/icons';
+
+import shopImg from '../../resources/shop.png';
 
 const Shops: React.FC = () => {
 	const [present] = useIonToast();
@@ -74,16 +76,28 @@ const Shops: React.FC = () => {
 					? <IonTitle>No hay tiendas</IonTitle>
 					: shops.map((shop: any, i) => (
 						<IonCard key={i}>
-							<IonCardHeader>
-								<IonCardTitle>{shop.name}</IonCardTitle>
-							</IonCardHeader>
-							<IonCardContent>
-								<IonButtons slot="end">
-									<IonButton expand="block" routerLink={'/shops/' + shop.id + '/cars'}>Autos</IonButton>
-									<IonButton expand="block" onClick={() => edit(shop)}>Editar</IonButton>
-									<IonButton expand="block" onClick={() => remove(shop.id)}>Eliminar</IonButton>
-								</IonButtons>
-							</IonCardContent>
+							<IonGrid>
+								<IonRow>
+									<IonCol size="20%">
+										<img alt="Auto" src={shopImg} style={{
+											width: "100%",
+											maxHeight: "150px"
+										}} />
+									</IonCol>
+									<IonCol>
+										<IonCardHeader>
+											<IonCardTitle>Nombre: {shop.name}</IonCardTitle>
+										</IonCardHeader>
+										<IonCardContent>
+											<IonButtons slot="end">
+												<IonButton expand="block" routerLink={'/shops/' + shop.id + '/cars'}>Autos</IonButton>
+												<IonButton expand="block" onClick={() => edit(shop)}>Editar</IonButton>
+												<IonButton expand="block" onClick={() => remove(shop.id)}>Eliminar</IonButton>
+											</IonButtons>
+										</IonCardContent>
+									</IonCol>
+								</IonRow>
+							</IonGrid>
 						</IonCard>
 					))}
 			</IonContent>

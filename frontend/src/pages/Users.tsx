@@ -1,8 +1,10 @@
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonLoading, IonPage, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
+import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonLoading, IonPage, IonRow, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import UserDetail from './UsersDetail';
 import { alert } from 'ionicons/icons';
+
+import userImg from '../../resources/user.png';
 
 const Users: React.FC = () => {
 	const [present] = useIonToast();
@@ -74,17 +76,29 @@ const Users: React.FC = () => {
 					? <IonTitle>No hay usuarios</IonTitle>
 					: users.map((user: any, i) => (
 						<IonCard key={i}>
-							<IonCardHeader>
-								<IonCardTitle>{user.username}</IonCardTitle>
-								<IonCardSubtitle>{user.name}</IonCardSubtitle>
-								<IonCardSubtitle>{user.surname}</IonCardSubtitle>
-							</IonCardHeader>
-							<IonCardContent>
-								<IonButtons slot="end">
-									<IonButton expand="block" onClick={() => edit(user)}>Editar</IonButton>
-									<IonButton expand="block" onClick={() => remove(user.id)}>Eliminar</IonButton>
-								</IonButtons>
-							</IonCardContent>
+							<IonGrid>
+								<IonRow>
+									<IonCol size="20%">
+										<img alt="Auto" src={userImg} style={{
+											width: "100%",
+											maxHeight: "150px"
+										}} />
+									</IonCol>
+									<IonCol>
+										<IonCardHeader>
+											<IonCardTitle>Usuario: {user.username}</IonCardTitle>
+											<IonCardSubtitle>Nombre: {user.name}</IonCardSubtitle>
+											<IonCardSubtitle>Apellido: {user.surname}</IonCardSubtitle>
+										</IonCardHeader>
+										<IonCardContent>
+											<IonButtons slot="end">
+												<IonButton expand="block" onClick={() => edit(user)}>Editar</IonButton>
+												<IonButton expand="block" onClick={() => remove(user.id)}>Eliminar</IonButton>
+											</IonButtons>
+										</IonCardContent>
+									</IonCol>
+								</IonRow>
+							</IonGrid>
 						</IonCard>
 					))}
 			</IonContent>
