@@ -17,7 +17,8 @@ const defaultCacheConfig = {
 	ttl: 0,
 }
 
-const cacheConfig = process.env.NODE_ENV == 'prod' ? { ...defaultCacheConfig, ...redisConfig } : defaultCacheConfig;
+//const cacheConfig = process.env.NODE_ENV == 'prod' ? { ...defaultCacheConfig, ...redisConfig } : defaultCacheConfig;
+const cacheConfig = defaultCacheConfig;
 
 @Module({
 	imports: [
