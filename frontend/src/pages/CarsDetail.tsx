@@ -15,7 +15,9 @@ const CarDetail: React.FC<CarDetailProps> = (props) => {
 	const [loading, setLoading] = useState(false);
 
 	const modal = useRef<HTMLIonModalElement>(null);
-	const inputName = useRef<HTMLIonInputElement>(null);
+	const inputType = useRef<HTMLIonInputElement>(null);
+	const inputYear = useRef<HTMLIonInputElement>(null);
+	const inputKM = useRef<HTMLIonInputElement>(null);
 
 	useEffect(() => {
 		setCar(props.car);
@@ -33,8 +35,10 @@ const CarDetail: React.FC<CarDetailProps> = (props) => {
 		if (loading) return;
 		setLoading(true);
 
-		axios.post('https://arquitectura-web.nyva.com.ar/api/cars', {
-			name: inputName.current?.value
+		axios.post(`https://arquitectura-web.nyva.com.ar/api/shops/${shopID}/cars`, {
+			type: inputType.current?.value,
+			year: inputYear.current?.value,
+			km: inputKM.current?.value
 		}).then(response => {
 			modal.current?.dismiss();
 		}).catch(error).finally(() => {
@@ -46,8 +50,10 @@ const CarDetail: React.FC<CarDetailProps> = (props) => {
 		if (loading) return;
 		setLoading(true);
 
-		axios.put('https://arquitectura-web.nyva.com.ar/api/cars/' + car.id, {
-			name: inputName.current?.value
+		axios.put(`https://arquitectura-web.nyva.com.ar/api/shops/${shopID}/cars/${car.id}`, {
+			type: inputType.current?.value,
+			year: inputYear.current?.value,
+			km: inputKM.current?.value
 		}).then(response => {
 			modal.current?.dismiss();
 		}).catch(error).finally(() => {
@@ -71,7 +77,7 @@ const CarDetail: React.FC<CarDetailProps> = (props) => {
 						<IonButtons slot="start">
 							<IonButton onClick={() => modal.current?.dismiss()}>Cancelar</IonButton>
 						</IonButtons>
-						<IonTitle>Tienda</IonTitle>
+						<IonTitle>Auto</IonTitle>
 						<IonButtons slot="end">
 							<IonButton strong={true} onClick={() => save()}>Guardar</IonButton>
 						</IonButtons>
@@ -79,7 +85,13 @@ const CarDetail: React.FC<CarDetailProps> = (props) => {
 				</IonHeader>
 					<IonContent className="ion-padding">
 						<IonItem>
-							<IonInput label="Nombre" labelPlacement="stacked" ref={inputName} type="text" placeholder="Nombre de la tienda" value={car?.name} />
+							<IonInput label="Tipo" labelPlacement="stacked" ref={inputType} type="text" placeholder="Tipo de auto" value={car?.type} />
+						</IonItem>
+						<IonItem>
+							<IonInput label="Año" labelPlacement="stacked" ref={inputYear} type="number" placeholder="Año del auto" value={car?.year} />
+						</IonItem>
+						<IonItem>
+							<IonInput label="KM" labelPlacement="stacked" ref={inputKM} type="number" placeholder="KM del auto" value={car?.km} />
 						</IonItem>
 					</IonContent>
 				</>
