@@ -48,6 +48,17 @@ const Cars: React.FC = () => {
 		});
 	}
 
+	function buy(id: number) {
+		if (loading) return;
+		setLoading(true);
+
+		axios.post(`https://arquitectura-web.nyva.com.ar/api/shops/${shopID}/cars/${id}/buy`).then(response => {
+			list();
+		}).catch(error).finally(() => {
+			setLoading(false);
+		});
+	}
+
 	function edit(car: any) {
 		setCar(car);
 		setIsOpen(true);
@@ -92,9 +103,11 @@ const Cars: React.FC = () => {
 											<IonCardTitle>Tipo: {car.type}</IonCardTitle>
 											<IonCardSubtitle>Año: {car.year}</IonCardSubtitle>
 											<IonCardSubtitle>KM: {car.km}</IonCardSubtitle>
+											<IonCardSubtitle>En venta: {car.bought ? 'No' : 'Si'}</IonCardSubtitle>
 										</IonCardHeader>
 										<IonCardContent>
 											<IonButtons slot="end">
+												{!car.bought && <IonButton expand="block" onClick={() => buy(car.id)}>Comprar</IonButton>}
 												<IonButton expand="block" onClick={() => edit(car)}>Editar</IonButton>
 												<IonButton expand="block" onClick={() => remove(car.id)}>Eliminar</IonButton>
 											</IonButtons>
